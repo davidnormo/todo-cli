@@ -1,0 +1,42 @@
+#!/usr/bin/env node
+var _ = require('underscore'),
+	fs = require('fs');
+
+var commands = {
+		ls: 'List',
+		rm: 'Clear'
+	},
+	argv = process.argv,
+	cmd = argv[2];
+
+if(cmd === undefined){
+	cmd = 'ls';
+}
+
+var output = '/Users/dnormington/Documents/personal/todo/todo.txt';
+
+//if the first argument is a string, append to list and ls
+if(!_.has(commands, cmd) && cmd.indexOf(' ') !== null){
+	fs.appendFileSync(output, cmd+'\n');
+	cmd = 'ls';
+}
+
+switch(cmd){
+	case 'ls':
+		var result = fs.readFileSync(output).toString();
+		if(result) console.log(result);
+			else console.log('Empty list'); 
+		break;
+	case 'rm':
+		var line = parseInt(argv[3]);
+		if(line){
+			var list = fs.readFileSync(output).toString().split('\n');
+			list.splice(line - 1, 1);
+			fs.truncateSync(output);
+			fs.appendFileSync(output, list.join('\n'));
+			console.log(list.join('\n'));
+		} else {
+			fs.truncateSync(output);
+		}
+		break;
+}

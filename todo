@@ -13,7 +13,7 @@ if(cmd === undefined){
 	cmd = 'ls';
 }
 
-var output = '/Users/dnormington/Documents/personal/todo/todo.txt';
+var output = __dirname + '/todo.txt';
 
 //if the first argument is a string, append to list and ls
 if(!_.has(commands, cmd) && cmd.indexOf(' ') !== null){
